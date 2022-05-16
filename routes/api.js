@@ -242,8 +242,17 @@ router.post('/comment/:id', authenticateUser, findPost, async (req, res) => {
   }
 });
 
-// ROUTE 10: All posts created by aithenticated user. GET '/api/posts/all_posts'
-router.get('/posts/all_posts', authenticateUser, async (req, res) => {
+// ROUTE 10: Get a post with the provided id. GET '/api/posts/{id}'
+router.get('/posts/:id', findPost, async (req, res) => {
+  // Extracting foundPost as post from req.body
+  const { foundPost: post } = req.body;
+
+  // If post found, send it
+  res.status(200).json({ post });
+});
+
+// ROUTE 11: All posts created by aithenticated user. GET '/api/posts/all_posts'
+router.get('/all_posts', authenticateUser, async (req, res) => {
   // Extracting the current user from req.body
   const { currentUser } = req.body;
 
@@ -262,15 +271,6 @@ router.get('/posts/all_posts', authenticateUser, async (req, res) => {
     console.error(err);
     res.status(500).json({ err });
   }
-});
-
-// ROUTE 11: Get a post with the provided id. GET '/api/posts/{id}'
-router.get('/posts/:id', findPost, async (req, res) => {
-  // Extracting foundPost as post from req.body
-  const { foundPost: post } = req.body;
-
-  // If post found, send it
-  res.status(200).json({ post });
 });
 
 // Exports
